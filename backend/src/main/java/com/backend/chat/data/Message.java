@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -29,5 +30,8 @@ public class Message {
     @Column(name = "sender")
     @NonNull
     String sender;
+
+    @Column(name = "date")
+    LocalDateTime date;
 
 }

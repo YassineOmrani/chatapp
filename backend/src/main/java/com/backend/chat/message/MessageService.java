@@ -44,10 +44,14 @@ public class MessageService {
 
     public List<MessageResponse> getAllMessages() {
         try {
-            final List<Message> messages = this.messageRepository.findAll();
+            final List<Message> messages = this.messageRepository.findAllByOrderByDateDesc();
             return messages
                     .stream()
-                    .map(message -> MessageResponse.builder().content(message.getMessage()).sender(message.getSender()).build())
+                    .map(message -> MessageResponse.builder()
+                            .content(message.getMessage())
+                            .sender(message.getSender())
+                            .date(message.getDate())
+                            .build())
                     .toList();
         } catch (DataAccessException dataAccessException) {
             log.warn("Messages retrieval error {}", dataAccessException.getMessage());

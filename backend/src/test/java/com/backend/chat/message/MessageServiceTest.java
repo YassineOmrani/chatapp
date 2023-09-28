@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -96,6 +97,55 @@ class MessageServiceTest {
 
         when(this.messageRepository.findAll()).thenThrow(new EmptyResultDataAccessException(0));
 
+        final List<MessageResponse> actualResponse = this.messageService.getAllMessages();
+        assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test()
+    @DisplayName("GetAllMessages returns sorted by date messages")
+    void getAllMessages_returnSortedByDate_isOk() {
+        final List<MessageResponse> expectedResponse = List.of(
+                MessageResponse
+                        .builder()
+                        .sender("user1")
+                        .content("content")
+                        .date(LocalDateTime.of(10,12,12,1,0))
+                        .build(),
+                MessageResponse
+                        .builder()
+                        .sender("user1")
+                        .content("content")
+                        .date(LocalDateTime.of(10,12,12,1,1))
+                        .build(),
+                MessageResponse
+                        .builder()
+                        .sender("user1")
+                        .content("content")
+                        .date(LocalDateTime.of(10,12,12,1,2))
+                        .build()
+        );
+        when(this.messageRepository.findAllByOrderByDateDesc()).thenReturn(
+                List.of(
+                        Message
+                                .builder()
+                                .sender("user1")
+                                .message("content")
+                                .date(LocalDateTime.of(10,12,12,1,0))
+                                .build(),
+                        Message
+                                .builder()
+                                .sender("user1")
+                                .message("content")
+                                .date(LocalDateTime.of(10,12,12,1,1))
+                                .build(),
+                        Message
+                                .builder()
+                                .sender("user1")
+                                .message("content")
+                                .date(LocalDateTime.of(10,12,12,1,2))
+                                .build()
+                )
+        );
         final List<MessageResponse> actualResponse = this.messageService.getAllMessages();
         assertEquals(expectedResponse, actualResponse);
     }
