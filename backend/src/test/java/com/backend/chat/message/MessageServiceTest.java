@@ -7,14 +7,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,7 +35,7 @@ class MessageServiceTest {
                 .build();
         final Message entity = Message.builder().message(messageDTO.getContent()).sender(messageDTO.getSender()).build();
         when(this.messageRepository.save(any(Message.class))).thenReturn(entity);
-        MessageResponse actualMessageResponse = this.messageService.getMessage(messageDTO);
+        MessageResponse actualMessageResponse = this.messageService.saveAndSendMessage(messageDTO);
         assertEquals(expectedResponse, actualMessageResponse);
     }
 
@@ -51,7 +49,7 @@ class MessageServiceTest {
         final MessageDTO messageDTO = MessageDTO.builder()
                 .build();
 
-        MessageResponse actualMessageResponse = this.messageService.getMessage(messageDTO);
+        MessageResponse actualMessageResponse = this.messageService.saveAndSendMessage(messageDTO);
         assertEquals(expectedResponse, actualMessageResponse);
     }
 
@@ -65,7 +63,7 @@ class MessageServiceTest {
                 .builder()
                 .build();
 
-        final MessageResponse actualMessageResponse = this.messageService.getMessage(messageDTO);
+        final MessageResponse actualMessageResponse = this.messageService.saveAndSendMessage(messageDTO);
         assertEquals(expectedMessageResponse, actualMessageResponse);
     }
 

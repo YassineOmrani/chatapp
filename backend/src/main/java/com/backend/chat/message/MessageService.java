@@ -5,7 +5,6 @@ import com.backend.chat.data.MessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    public MessageResponse getMessage(MessageDTO messageDTO) {
+    public MessageResponse saveAndSendMessage(MessageDTO messageDTO) {
         try {
             if (Objects.isNull(messageDTO.getContent()) && Objects.isNull(messageDTO.getSender()))
                 throw new IllegalArgumentException("invalid messsage arguments !");
