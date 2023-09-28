@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,5 +34,10 @@ public class Message {
 
     @Column(name = "date")
     LocalDateTime date;
+
+    @PrePersist
+    public void prePersist() {
+        date = LocalDateTime.now(); // Set the date property to the current date and time before persisting
+    }
 
 }
